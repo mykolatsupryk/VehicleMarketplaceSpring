@@ -16,7 +16,7 @@ public interface VehicleService {
     void delete(Long id);
     Vehicle findById(Long id);
     List<Vehicle> findAllVehicles ();
-    List<Vehicle> search (VehicleSearchRequest vehicleSearchRequest);
+    List<Vehicle> search (VehicleSearchRequest vehicleSearchRequest, int pageNumber, int pageSize, String sortBy);
 
 
 

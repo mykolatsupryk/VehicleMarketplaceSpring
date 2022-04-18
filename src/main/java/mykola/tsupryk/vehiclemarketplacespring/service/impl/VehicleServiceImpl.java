@@ -12,6 +12,8 @@ import mykola.tsupryk.vehiclemarketplacespring.repository.VehicleRepository;
 import mykola.tsupryk.vehiclemarketplacespring.repository.spec.VehicleSpecification;
 import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -73,8 +75,10 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<Vehicle> search(VehicleSearchRequest vehicleSearchRequest) {
+    public List<Vehicle> search(VehicleSearchRequest vehicleSearchRequest
+                                , int pageNumber, int pageSize, String sortBy) {
         VehicleSpecification vehicleSpecification = new VehicleSpecification(vehicleSearchRequest);
-        return vehicleRepository.findAll(vehicleSpecification);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+        return (List<Vehicle>) vehicleRepository.findAll(vehicleSpecification, pageRequest);
     }
 }

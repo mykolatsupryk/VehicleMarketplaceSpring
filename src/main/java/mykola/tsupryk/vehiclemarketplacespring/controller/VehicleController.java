@@ -50,8 +50,9 @@ public class VehicleController {
     }
 
     @GetMapping("/search")
-    public List<Vehicle> search (@RequestBody VehicleSearchRequest vehicleSearchRequest) {
-        return vehicleService.search(vehicleSearchRequest);
+    public List<Vehicle> search (@RequestBody VehicleSearchRequest vehicleSearchRequest
+                                , @RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String sortBy) {
+        return vehicleService.search(vehicleSearchRequest, pageNumber, pageSize, sortBy);
     }
 
 

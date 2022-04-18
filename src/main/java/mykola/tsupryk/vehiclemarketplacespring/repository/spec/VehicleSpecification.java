@@ -78,14 +78,15 @@ public class VehicleSpecification implements Specification<Vehicle> {
     }
 
 
-    private void predicateByParameter(Root root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, String parameter, String value ) {
+    private void predicateByParameter(Root root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates
+                                        , String parameter, String value ) {
         if (!StringUtils.isBlank(value)) {
             predicates.add(criteriaBuilder.equal(root.get(parameter), value));
         }
     }
 
     private void predicateByParameter(Root root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates
-            , String parameter, Integer topValue, Integer bottomValue, String operationValue) {
+                                        , String parameter, Integer topValue, Integer bottomValue, String operationValue) {
 
         Predicate byTopValue;
         Predicate byBottomValue;
