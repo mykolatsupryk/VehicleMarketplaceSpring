@@ -8,6 +8,7 @@ import mykola.tsupryk.vehiclemarketplacespring.enums.Color;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -29,9 +30,7 @@ public class Vehicle {
     private Color color;
     private Integer mileAge;
     private Integer price;
-    private File photo;
     private Boolean isConfirm = false;
-
     @ManyToOne(cascade = {CascadeType.ALL})
     private Owner owner;
 

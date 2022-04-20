@@ -13,6 +13,7 @@ import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,12 +25,12 @@ public class VehicleController {
 
 
     @PostMapping("/create")
-    public void create (@RequestBody VehicleCreateRequest vehicleCreateRequest, @RequestParam Long ownerId) throws UnreachebleTypeException {
+    public void create (@RequestBody VehicleCreateRequest vehicleCreateRequest, @RequestParam Long ownerId) throws UnreachebleTypeException, IOException {
         vehicleService.addCar(vehicleCreateRequest, ownerId);
     }
 
-    @PostMapping("/addphoto/{id}")
-    public void addPhoto(@PathVariable Long id) {
+    @PostMapping("/addPhoto/{id}")
+    public void addPhoto(@PathVariable Long id) throws IOException {
         vehicleService.addPhoto(id);
     }
 
@@ -44,15 +45,14 @@ public class VehicleController {
     }
 
     @GetMapping("/findall")
-    public List<Vehicle> findAll () {
-//        vehicleService.findAllVehicles().stream().forEach(System.out::println);
-        return vehicleService.findAllVehicles();
+    public List<Vehicle> findAll (@RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String sortBy, @RequestParam String sortFrom) {
+        return vehicleService.findAllVehicles(pageNumber, pageSize, sortBy, sortFrom);
     }
 
     @GetMapping("/search")
     public List<Vehicle> search (@RequestBody VehicleSearchRequest vehicleSearchRequest
-                                , @RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String sortBy) {
-        return vehicleService.search(vehicleSearchRequest, pageNumber, pageSize, sortBy);
+                                , @RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String sortBy, @RequestParam String sortFrom) {
+        return vehicleService.search(vehicleSearchRequest, pageNumber, pageSize, sortBy, sortFrom);
     }
 
 

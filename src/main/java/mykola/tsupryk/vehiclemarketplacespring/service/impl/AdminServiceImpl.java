@@ -2,13 +2,17 @@ package mykola.tsupryk.vehiclemarketplacespring.service.impl;
 
 
 import mykola.tsupryk.vehiclemarketplacespring.entity.Admin;
+import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
+import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.repository.AdminRepository;
+import mykola.tsupryk.vehiclemarketplacespring.repository.OwnerRepository;
 import mykola.tsupryk.vehiclemarketplacespring.repository.VehicleRepository;
 import mykola.tsupryk.vehiclemarketplacespring.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -20,6 +24,8 @@ public class AdminServiceImpl implements AdminService {
     private AdminRepository adminRepository;
     @Autowired
     private VehicleRepository vehicleRepository;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     public void addAdmin(String name, String passwword) {
 
@@ -30,8 +36,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin findById(Long id) {
-        return adminRepository.findById(id).orElseThrow(() -> new RuntimeException("This admin is not found"));
+    public Admin findById(Long id)  {
+        return adminRepository.findById(id).orElseThrow(() -> new NotFoundException("Admin"));
     }
 
     @Override
@@ -52,14 +58,13 @@ public class AdminServiceImpl implements AdminService {
         return String.valueOf(stringBuilder.append(count).append(" vehicles"));
     }
 
+    @Override
+    public List<Vehicle> findAllVehicles() {
+        return vehicleRepository.findAll();
+    }
 
-
-
-
-
-
-
-
-
-
+    @Override
+    public List<Owner> findAllOwners() {
+        return ownerRepository.findAll();
+    }
 }

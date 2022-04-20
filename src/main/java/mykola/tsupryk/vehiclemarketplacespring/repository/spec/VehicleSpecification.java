@@ -133,9 +133,11 @@ public class VehicleSpecification implements Specification<Vehicle> {
         } else if (topValue != null) {
             System.out.println("-------------- 13 --------------");
             predicates.add(criteriaBuilder.equal(root.get(parameter), topValue));
-        } else {
+        } else if (bottomValue != null){
             System.out.println("-------------- 14 --------------");
             predicates.add(criteriaBuilder.equal(root.get(parameter), bottomValue));
+        } else {
+            System.out.println(parameter + " no parameters");
         }
         System.out.println("-------------- 15 --------------");
     }
