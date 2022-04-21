@@ -21,8 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Service
@@ -107,4 +109,28 @@ public class VehicleServiceImpl implements VehicleService {
         }
         return vehicleRepository.findAll(vehicleSpecification, pageRequest).getContent();
     }
+
+    @Override
+    public List<Vehicle> findSimilarVehicles(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle"));
+        List<Vehicle> similarVehicles = new ArrayList<>();
+        AtomicInteger countOfIdealChoice = new AtomicInteger();
+        vehicleRepository.findAll().stream().filter(v -> v.getBodyType().equals(vehicle.getBodyType())).forEach(v -> {
+            if (v.getPrice() >= (vehicle.getPrice() * 0.8)
+                    && v.getPrice() <= (vehicle.getPrice() * 1.2)) {
+                if (v.getYearOfManufacture() >= (vehicle.getYearOfManufacture() - 3)
+                    && v.getYearOfManufacture() <= (vehicle.getYearOfManufacture() + 3)) {
+                    countOfIdealChoice.getAndIncrement();
+                    similarVehicles.add(0, v);
+                } else {
+                    similarVehicles.add(countOfIdealChoice.get(), v);
+                }
+            } else {
+                similarVehicles.add(v);
+            }
+        });
+        return similarVehicles.subList(0, 3);
+    }
 }
+
+

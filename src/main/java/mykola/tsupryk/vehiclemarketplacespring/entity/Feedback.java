@@ -7,16 +7,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@Table (name = "rating")
-public class Rating {
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer rating;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    private String comment;
+    @ManyToOne
     private Owner owner;
-
 
 
 }

@@ -55,6 +55,10 @@ public class VehicleController {
         return vehicleService.search(vehicleSearchRequest, pageNumber, pageSize, sortBy, sortFrom);
     }
 
+    @GetMapping("/similarVehicles{id}")
+    public List<Vehicle> getSimilarVehicles (@PathVariable Long id) {
+        return vehicleService.findSimilarVehicles(id);
+    }
 
 
 

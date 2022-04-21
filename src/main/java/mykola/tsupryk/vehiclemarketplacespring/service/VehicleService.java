@@ -18,6 +18,7 @@ public interface VehicleService {
     Vehicle findById(Long id);
     List<Vehicle> findAllVehicles (int pageNumber, int pageSize, String sortBy, String sortFrom);
     List<Vehicle> search (VehicleSearchRequest vehicleSearchRequest, int pageNumber, int pageSize, String sortBy, String sortFrom);
+    List<Vehicle> findSimilarVehicles (Long id);
 
 
 
