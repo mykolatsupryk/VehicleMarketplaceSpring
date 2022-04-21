@@ -9,5 +9,6 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
 
-    List<Feedback> findAllByOwner(Owner owner);
+    List<Feedback> findAllByComentator(Owner owner);
+    List<Feedback> findAllByUser(Owner owner);
 }

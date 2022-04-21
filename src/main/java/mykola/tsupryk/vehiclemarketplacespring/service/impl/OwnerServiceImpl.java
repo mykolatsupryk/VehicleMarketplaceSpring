@@ -58,8 +58,20 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
+    public void addFeedback(Long idComentator, String text, Long id) {
+        Owner comentator = ownerRepository.findById(idComentator).orElseThrow(() -> new NotFoundException("Comentator"));
+        Owner user = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("User"));
+        Feedback feedback = new Feedback();
+        feedback.setComentator(comentator);
+        feedback.setUser(user);
+        feedback.setComment(text);
+
+        feedbackRepository.save(feedback);
+    }
+
+    @Override
     public List<Feedback> getFeedbacks(Long id) {
         Owner owner = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("Owner"));
-        return feedbackRepository.findAllByOwner(owner);
+        return feedbackRepository.findAllByUser(owner);
     }
 }

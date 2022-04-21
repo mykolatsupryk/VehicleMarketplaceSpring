@@ -23,7 +23,7 @@ public class OwnerController {
     }
 
     @PostMapping("/rating{id}:{rate}")
-    public void setRating (@PathVariable Long id, Integer rate) {
+    public void addRating (@PathVariable Long id, @PathVariable Integer rate) {
         ownerService.setRating(id, rate);
     }
 
@@ -32,6 +32,10 @@ public class OwnerController {
         return ownerService.getRating(id);
     }
 
+    @PostMapping("/{id}/add/feedback")
+    public void addFeedback (@RequestParam Long idComentator, @RequestParam String text, @PathVariable Long id) {
+        ownerService.addFeedback(idComentator, text, id);
+    }
     @GetMapping("/{id}/feedback")
     public List<Feedback> getFeedbacks (@PathVariable Long id) {
         return ownerService.getFeedbacks(id);

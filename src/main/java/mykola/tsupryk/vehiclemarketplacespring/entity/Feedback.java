@@ -13,8 +13,10 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String comment;
-    @ManyToOne
-    private Owner owner;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Owner user;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Owner comentator;
 
 
 }
