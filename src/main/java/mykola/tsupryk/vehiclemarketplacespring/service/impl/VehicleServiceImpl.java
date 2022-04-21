@@ -128,6 +128,7 @@ public class VehicleServiceImpl implements VehicleService {
                 similarVehicles.add(v);
             }
         });
+        similarVehicles.remove(vehicle);
         return similarVehicles.subList(0, 3);
     }
 }
