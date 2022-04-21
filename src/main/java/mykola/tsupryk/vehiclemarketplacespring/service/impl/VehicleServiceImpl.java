@@ -5,8 +5,8 @@ import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleSearchRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Photo;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
-import mykola.tsupryk.vehiclemarketplacespring.enums.BodyType;
-import mykola.tsupryk.vehiclemarketplacespring.enums.Color;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.BodyType;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
 import mykola.tsupryk.vehiclemarketplacespring.repository.OwnerRepository;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 

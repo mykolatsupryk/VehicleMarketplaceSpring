@@ -1,13 +1,9 @@
 package mykola.tsupryk.vehiclemarketplacespring.controller;
 
 
-import lombok.Getter;
 import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleCreateRequest;
 import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleSearchRequest;
-import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
-import mykola.tsupryk.vehiclemarketplacespring.enums.BodyType;
-import mykola.tsupryk.vehiclemarketplacespring.enums.Color;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
 import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;

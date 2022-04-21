@@ -1,4 +1,4 @@
-package mykola.tsupryk.vehiclemarketplacespring.enums;
+package mykola.tsupryk.vehiclemarketplacespring.entity.model.enums;
 
 
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;

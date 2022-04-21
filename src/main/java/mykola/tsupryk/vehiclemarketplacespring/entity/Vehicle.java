@@ -3,12 +3,10 @@ package mykola.tsupryk.vehiclemarketplacespring.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import mykola.tsupryk.vehiclemarketplacespring.enums.BodyType;
-import mykola.tsupryk.vehiclemarketplacespring.enums.Color;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.BodyType;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
 
 import javax.persistence.*;
-import java.io.File;
-import java.util.List;
 import java.util.Random;
 
 @Entity
