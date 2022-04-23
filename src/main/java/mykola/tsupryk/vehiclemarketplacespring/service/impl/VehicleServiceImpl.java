@@ -5,13 +5,11 @@ import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleSearchRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Photo;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
-import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.BodyType;
+import mykola.tsupryk.vehiclemarketplacespring.entity.BodyType;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
-import mykola.tsupryk.vehiclemarketplacespring.repository.OwnerRepository;
-import mykola.tsupryk.vehiclemarketplacespring.repository.PhotoRepository;
-import mykola.tsupryk.vehiclemarketplacespring.repository.VehicleRepository;
+import mykola.tsupryk.vehiclemarketplacespring.repository.*;
 import mykola.tsupryk.vehiclemarketplacespring.repository.spec.VehicleSpecification;
 import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +33,17 @@ public class VehicleServiceImpl implements VehicleService {
     private OwnerRepository ownerRepository;
     @Autowired
     private PhotoRepository photoRepository;
+    @Autowired
+    private BrandRepository brandRepository;
+    @Autowired
+    private ModelRepository modelRepository;
+    @Autowired
+    private BodyTypeRepository bodyTypeRepository;
 
     @Override
-    public void addCar(VehicleCreateRequest vehicleCreateRequest, Long ownerId) throws UnreachebleTypeException {
+    public void addCar(VehicleCreateRequest vehicleCreateRequest, Long ownerId) throws UnreachebleTypeException, NotFoundException {
 
-        Vehicle vehicle = new Vehicle();
-        vehicle.setBrand(vehicleCreateRequest.getBrand());
-        vehicle.setModel(vehicleCreateRequest.getModel());
-        vehicle.setYearOfManufacture(vehicleCreateRequest.getYearOfManufacture());
-        vehicle.setBodyType(BodyType.checkBodyType(vehicleCreateRequest.getBodyType()));
-        vehicle.setEnginePower(vehicleCreateRequest.getEnginePower());
-        vehicle.setColor(Color.checkColor(vehicleCreateRequest.getColor()));
-        vehicle.setMileAge(vehicleCreateRequest.getMileAge());
-        vehicle.setPrice(vehicleCreateRequest.getPrice());
-
+        Vehicle vehicle = createVehicle(vehicleCreateRequest);
 
         Owner owner = ownerRepository.findAllById(ownerId);
         vehicle.setOwner(owner);
@@ -75,12 +70,12 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id) throws NotFoundException {
         vehicleRepository.delete(findById(id));
     }
 
     @Override
-    public Vehicle findById(Long id) {
+    public Vehicle findById(Long id) throws NotFoundException {
         return vehicleRepository.findById(id)
                                 .orElseThrow(() -> new NotFoundException("Vehicle"));
     }
@@ -110,11 +105,11 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public List<Vehicle> findSimilarVehicles(Long id) {
+    public List<Vehicle> findSimilarVehicles(Long id) throws NotFoundException {
         Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> new NotFoundException("Vehicle"));
         List<Vehicle> similarVehicles = new ArrayList<>();
         AtomicInteger countOfIdealChoice = new AtomicInteger();
-        vehicleRepository.findAll().stream().filter(v -> v.getBodyType().equals(vehicle.getBodyType())).forEach(v -> {
+        vehicleRepository.findAllByIsConfirm(true).stream().filter(v -> v.getBodyType().equals(vehicle.getBodyType())).forEach(v -> {
             if (v.getPrice() >= (vehicle.getPrice() * 0.8)
                     && v.getPrice() <= (vehicle.getPrice() * 1.2)) {
                 if (v.getYearOfManufacture() >= (vehicle.getYearOfManufacture() - 3)
@@ -130,6 +125,35 @@ public class VehicleServiceImpl implements VehicleService {
         });
         similarVehicles.remove(vehicle);
         return similarVehicles.subList(0, 3);
+    }
+
+
+
+
+
+
+    private Vehicle createVehicle (VehicleCreateRequest vehicleCreateRequest) throws UnreachebleTypeException, NotFoundException {
+        Vehicle vehicle = new Vehicle();
+        if (brandRepository.findAll().stream().anyMatch(brand -> brand.getBrand().equalsIgnoreCase(vehicleCreateRequest.getBrand()))) {
+            vehicle.setBrand(brandRepository.findByBrandIgnoreCase(vehicleCreateRequest.getBrand()));
+        } else throw new NotFoundException("Admin must first create this brand. It");
+
+        if (modelRepository.findAll().stream().anyMatch(model -> model.getModel().equalsIgnoreCase(vehicleCreateRequest.getModel()))) {
+            vehicle.setModel(modelRepository.findByModelIgnoreCase(vehicleCreateRequest.getModel()));
+        } else throw new NotFoundException("Admin must first create this model. It");
+
+        vehicle.setYearOfManufacture(vehicleCreateRequest.getYearOfManufacture());
+
+        if (bodyTypeRepository.findAll().stream().anyMatch(bodyType -> bodyType.getBodyType().equalsIgnoreCase(vehicleCreateRequest.getBodyType()))) {
+            vehicle.setBodyType(bodyTypeRepository.findByBodyTypeIgnoreCase(vehicleCreateRequest.getBodyType()));
+        } else throw new NotFoundException("Admin must first create this bodyType. It");
+
+        vehicle.setEnginePower(vehicleCreateRequest.getEnginePower());
+        vehicle.setColor(Color.checkColor(vehicleCreateRequest.getColor()));
+        vehicle.setMileAge(vehicleCreateRequest.getMileAge());
+        vehicle.setPrice(vehicleCreateRequest.getPrice());
+
+        return vehicle;
     }
 }
 

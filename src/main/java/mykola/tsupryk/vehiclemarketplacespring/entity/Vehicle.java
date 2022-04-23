@@ -3,7 +3,6 @@ package mykola.tsupryk.vehiclemarketplacespring.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.BodyType;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
 
 import javax.persistence.*;
@@ -17,11 +16,13 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String brand;
-    private String model;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Brand brand;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private Model model;
     private final String vin = generateVIN();
     private Integer yearOfManufacture;
-    @Enumerated(value = EnumType.STRING)
+    @ManyToOne(cascade = {CascadeType.ALL})
     private BodyType bodyType;
     private Integer enginePower;
     @Enumerated(value = EnumType.STRING)

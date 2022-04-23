@@ -4,6 +4,8 @@ import mykola.tsupryk.vehiclemarketplacespring.dto.request.OwnerRegistryRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Feedback;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Rating;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.Company;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.Person;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.repository.FeedbackRepository;
 import mykola.tsupryk.vehiclemarketplacespring.repository.OwnerRepository;
@@ -27,8 +29,8 @@ public class OwnerServiceImpl implements OwnerService {
 
 
     @Override
-    public void registry(OwnerRegistryRequest ownerRegistryRequest) {
-        Owner owner = new Owner();
+    public void registryPerson(OwnerRegistryRequest ownerRegistryRequest) {
+        Owner owner = new Person();
         owner.setName(ownerRegistryRequest.getName());
         owner.setEmail(ownerRegistryRequest.getEmail());
         owner.setPassword(ownerRegistryRequest.getPassword());
@@ -36,7 +38,16 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public void setRating(Long id, Integer rate) {
+    public void registryCompany(OwnerRegistryRequest ownerRegistryRequest) {
+        Owner owner = new Company();
+        owner.setName(ownerRegistryRequest.getName());
+        owner.setEmail(ownerRegistryRequest.getEmail());
+        owner.setPassword(ownerRegistryRequest.getPassword());
+        ownerRepository.save(owner);
+    }
+
+    @Override
+    public void setRating(Long id, Integer rate) throws NotFoundException {
         Owner owner = ownerRepository.findById(id)
                                      .orElseThrow(() -> new NotFoundException("Owner"));
         Rating rating = new Rating();
@@ -46,7 +57,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Double getRating(Long id) {
+    public Double getRating(Long id) throws NotFoundException {
         Owner owner = ownerRepository.findById(id)
                                      .orElseThrow(() -> new NotFoundException("Owner"));
         List<Rating> rates = ratingRepository.findAllByOwner(owner);
@@ -58,7 +69,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public void addFeedback(Long idComentator, String text, Long id) {
+    public void addFeedback(Long idComentator, String text, Long id) throws NotFoundException {
         Owner comentator = ownerRepository.findById(idComentator).orElseThrow(() -> new NotFoundException("Comentator"));
         Owner user = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("User"));
         Feedback feedback = new Feedback();
@@ -70,8 +81,19 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public List<Feedback> getFeedbacks(Long id) {
+    public List<Feedback> getFeedbacks(Long id) throws NotFoundException {
         Owner owner = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("Owner"));
         return feedbackRepository.findAllByUser(owner);
+    }
+
+    @Override
+    public void addMoney(Long id, Integer money) throws NotFoundException {
+        Owner owner = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("Owner"));
+        if (owner.getMoney() == null) {
+            owner.setMoney(money);
+        } else {
+            owner.setMoney(owner.getMoney() + money);
+        }
+        ownerRepository.save(owner);
     }
 }

@@ -4,8 +4,6 @@ import mykola.tsupryk.vehiclemarketplacespring.entity.model.Message;
 import mykola.tsupryk.vehiclemarketplacespring.service.MessageService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;

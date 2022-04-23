@@ -4,6 +4,7 @@ package mykola.tsupryk.vehiclemarketplacespring.controller;
 import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleCreateRequest;
 import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleSearchRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
+import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
 import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class VehicleController {
 
 
     @PostMapping("/create")
-    public void create (@RequestBody VehicleCreateRequest vehicleCreateRequest, @RequestParam Long ownerId) throws UnreachebleTypeException, IOException {
+    public void create (@RequestBody VehicleCreateRequest vehicleCreateRequest, @RequestParam Long ownerId) throws UnreachebleTypeException, IOException, NotFoundException {
         vehicleService.addCar(vehicleCreateRequest, ownerId);
     }
 
@@ -31,12 +32,12 @@ public class VehicleController {
     }
 
     @PostMapping("/delete/{id}")
-    public void delete (@PathVariable Long id) {
+    public void delete (@PathVariable Long id) throws NotFoundException {
         vehicleService.delete(id);
     }
 
     @GetMapping("/find/{id}")
-    public Vehicle findById (@PathVariable Long id) {
+    public Vehicle findById (@PathVariable Long id) throws NotFoundException {
         return vehicleService.findById(id);
     }
 
@@ -52,7 +53,7 @@ public class VehicleController {
     }
 
     @GetMapping("/similarVehicles{id}")
-    public List<Vehicle> getSimilarVehicles (@PathVariable Long id) {
+    public List<Vehicle> getSimilarVehicles (@PathVariable Long id) throws NotFoundException {
         return vehicleService.findSimilarVehicles(id);
     }
 

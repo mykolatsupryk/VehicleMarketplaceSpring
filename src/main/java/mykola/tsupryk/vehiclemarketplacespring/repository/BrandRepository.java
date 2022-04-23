@@ -1,15 +1,16 @@
 package mykola.tsupryk.vehiclemarketplacespring.repository;
 
-import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
+
+import mykola.tsupryk.vehiclemarketplacespring.entity.Brand;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface OwnerRepository extends JpaRepository<Owner, Long> {
+public interface BrandRepository extends JpaRepository<Brand, Long> {
 
-    Owner findAllById(Long id);
+    Brand findByBrandIgnoreCase (String brand);
+
+
 
 
 }
