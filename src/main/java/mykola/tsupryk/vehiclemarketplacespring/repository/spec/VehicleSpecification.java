@@ -92,54 +92,54 @@ public class VehicleSpecification implements Specification<Vehicle> {
         Predicate byBottomValue;
 
         if (topValue != null && bottomValue != null) {
-            System.out.println("-------------- 1 --------------");
+//            System.out.println("-------------- 1 --------------");
             if (topValue > bottomValue) {
-                System.out.println("-------------- 2 --------------");
+//                System.out.println("-------------- 2 --------------");
                 byTopValue = criteriaBuilder.lessThanOrEqualTo(root.get(parameter), topValue);
                 byBottomValue = criteriaBuilder.greaterThanOrEqualTo(root.get(parameter), bottomValue);
             } else {
-                System.out.println("-------------- 3 --------------");
+//                System.out.println("-------------- 3 --------------");
                 byBottomValue = criteriaBuilder.lessThanOrEqualTo(root.get(parameter), bottomValue);
                 byTopValue = criteriaBuilder.greaterThanOrEqualTo(root.get(parameter), topValue);
             }
             predicates.add(criteriaBuilder.and(byBottomValue, byTopValue));
         } else if (!StringUtils.isBlank(operationValue)) {
-            System.out.println("-------------- 4 --------------");
+//            System.out.println("-------------- 4 --------------");
             if (operationValue.equals("greater")) {
-                System.out.println("-------------- 5 --------------");
+//                System.out.println("-------------- 5 --------------");
                 if (topValue != null) {
-                    System.out.println("-------------- 6 --------------");
+//                    System.out.println("-------------- 6 --------------");
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(parameter), topValue));
                 } else {
-                    System.out.println("-------------- 7 --------------");
+//                    System.out.println("-------------- 7 --------------");
                     predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(parameter), bottomValue));
                 }
             } else if (operationValue.equals("less")) {
-                System.out.println("-------------- 8 --------------");
+//                System.out.println("-------------- 8 --------------");
                 if (topValue != null) {
-                    System.out.println("-------------- 9 --------------");
+//                    System.out.println("-------------- 9 --------------");
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(parameter), topValue));
                 } else {
-                    System.out.println("-------------- 10 --------------");
+//                    System.out.println("-------------- 10 --------------");
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(parameter), bottomValue));
                 }
             } else if (topValue != null) {
-                System.out.println("-------------- 11 --------------");
+//                System.out.println("-------------- 11 --------------");
                 predicates.add(criteriaBuilder.equal(root.get(parameter), topValue));
             } else {
-                System.out.println("-------------- 12 --------------");
+//                System.out.println("-------------- 12 --------------");
                 predicates.add(criteriaBuilder.equal(root.get(parameter), bottomValue));
             }
         } else if (topValue != null) {
-            System.out.println("-------------- 13 --------------");
+//            System.out.println("-------------- 13 --------------");
             predicates.add(criteriaBuilder.equal(root.get(parameter), topValue));
         } else if (bottomValue != null){
-            System.out.println("-------------- 14 --------------");
+//            System.out.println("-------------- 14 --------------");
             predicates.add(criteriaBuilder.equal(root.get(parameter), bottomValue));
         } else {
-            System.out.println(parameter + " no parameters");
+//            System.out.println(parameter + " no parameters");
         }
-        System.out.println("-------------- 15 --------------");
+//        System.out.println("-------------- 15 --------------");
     }
 
 

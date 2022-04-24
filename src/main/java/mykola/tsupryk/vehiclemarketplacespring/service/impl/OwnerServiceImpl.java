@@ -1,16 +1,23 @@
 package mykola.tsupryk.vehiclemarketplacespring.service.impl;
 
 import mykola.tsupryk.vehiclemarketplacespring.dto.request.OwnerRegistryRequest;
+import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleChangeRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Feedback;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Rating;
+import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.Company;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.Person;
+import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
+import mykola.tsupryk.vehiclemarketplacespring.exception.InvalidContactNumberException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
+import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
 import mykola.tsupryk.vehiclemarketplacespring.repository.FeedbackRepository;
 import mykola.tsupryk.vehiclemarketplacespring.repository.OwnerRepository;
 import mykola.tsupryk.vehiclemarketplacespring.repository.RatingRepository;
+import mykola.tsupryk.vehiclemarketplacespring.repository.VehicleRepository;
 import mykola.tsupryk.vehiclemarketplacespring.service.OwnerService;
+import mykola.tsupryk.vehiclemarketplacespring.validator.ContactNumberValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +29,8 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private VehicleRepository vehicleRepository;
     @Autowired
     private RatingRepository ratingRepository;
     @Autowired
@@ -95,5 +104,49 @@ public class OwnerServiceImpl implements OwnerService {
             owner.setMoney(owner.getMoney() + money);
         }
         ownerRepository.save(owner);
+    }
+
+    @Override
+    public void addCity(Long id, String city) throws NotFoundException {
+        Owner owner = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("Owner"));
+        owner.setCity(city);
+        ownerRepository.save(owner);
+    }
+
+    @Override
+    public void addContactNumber(Long id, String contactNumber) throws NotFoundException, InvalidContactNumberException {
+        Owner owner = ownerRepository.findById(id).orElseThrow(() -> new NotFoundException("Owner"));
+        if (ContactNumberValidator.validatePhoneNumber(contactNumber)) {
+            owner.setContactNumber(contactNumber);
+            ownerRepository.save(owner);
+        }
+    }
+
+    @Override
+    public void editVehicle(Long idVehicle, VehicleChangeRequest vehicleChangeRequest) throws NotFoundException, UnreachebleTypeException {
+        Vehicle vehicle = vehicleRepository.findById(idVehicle).orElseThrow(() -> new NotFoundException("Vehicle"));
+        changeVehicleProfile(vehicle, vehicleChangeRequest);
+        vehicleRepository.save(vehicle);
+    }
+
+
+
+
+
+
+
+    private void changeVehicleProfile(Vehicle vehicle, VehicleChangeRequest vehicleChangeRequest) throws UnreachebleTypeException{
+        if (vehicleChangeRequest.getColor() != null) {
+            vehicle.setColor(Color.checkColor(vehicleChangeRequest.getColor()));
+        }
+        if (vehicleChangeRequest.getEnginePower() != null) {
+            vehicle.setEnginePower(vehicleChangeRequest.getEnginePower());
+        }
+        if (vehicleChangeRequest.getMileAge() != null) {
+            vehicle.setMileAge(vehicleChangeRequest.getMileAge());
+        }
+        if (vehicleChangeRequest.getPrice() != null) {
+            vehicle.setPrice(vehicleChangeRequest.getPrice());
+        }
     }
 }

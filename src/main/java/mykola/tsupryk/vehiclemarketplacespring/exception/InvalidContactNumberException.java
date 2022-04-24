@@ -2,7 +2,7 @@ package mykola.tsupryk.vehiclemarketplacespring.exception;
 
 public class InvalidContactNumberException extends Exception{
 
-    public InvalidContactNumberException() {
-        super("Invalid contact number");
+    public InvalidContactNumberException(String phoneNumber) {
+        super("Invalid contact number: " + phoneNumber);
     }
 }

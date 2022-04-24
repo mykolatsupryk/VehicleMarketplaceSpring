@@ -57,6 +57,16 @@ public class VehicleController {
         return vehicleService.findSimilarVehicles(id);
     }
 
+    @GetMapping("/showAllModels")
+    public String getAllModels () {
+        return vehicleService.getAllModels();
+    }
+
+    @PostMapping("/{id}/exchenge")
+    public void exchangeVehicle (@RequestParam Long idVehicle, @PathVariable Long id) throws NotFoundException {
+        vehicleService.exchangeVehicle (id, idVehicle);
+    }
+
 
 
 

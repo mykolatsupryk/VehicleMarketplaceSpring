@@ -45,7 +45,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = createVehicle(vehicleCreateRequest);
 
-        Owner owner = ownerRepository.findAllById(ownerId);
+        Owner owner = ownerRepository.findById(ownerId).orElseThrow(() -> new NotFoundException("Owner"));
         vehicle.setOwner(owner);
         vehicleRepository.save(vehicle);
     }
@@ -127,10 +127,29 @@ public class VehicleServiceImpl implements VehicleService {
         return similarVehicles.subList(0, 3);
     }
 
+    @Override
+    public String getAllModels() {
+        StringBuilder builder = new StringBuilder();
+        brandRepository.findAll().stream().forEach(brand -> {
+            builder.append("\n").append(brand.getBrand()).append("\n\t");
+            modelRepository.findAll().stream().filter(model -> model.getBrand().equals(brand)).forEach(model -> {
+                builder.append(model.getModel()).append(", ");
+            });
+        });
+        return builder.toString();
+    }
 
-
-
-
+    @Override
+    public void exchangeVehicle(Long idFirstCar, Long idSecondCar) throws NotFoundException {
+        Vehicle firstVehicle = vehicleRepository.findById(idFirstCar).orElseThrow(() -> new NotFoundException("First vehicle"));
+        Vehicle secondVehicle = vehicleRepository.findById(idSecondCar).orElseThrow(() -> new NotFoundException("Second vehicle"));
+        Owner firstOwner = firstVehicle.getOwner();
+        Owner secondOwner = secondVehicle.getOwner();
+        firstVehicle.setOwner(secondOwner);
+        secondVehicle.setOwner(firstOwner);
+        vehicleRepository.save(firstVehicle);
+        vehicleRepository.save(secondVehicle);
+    }
 
     private Vehicle createVehicle (VehicleCreateRequest vehicleCreateRequest) throws UnreachebleTypeException, NotFoundException {
         Vehicle vehicle = new Vehicle();

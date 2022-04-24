@@ -20,7 +20,8 @@ public interface VehicleService {
     List<Vehicle> findAllVehicles (int pageNumber, int pageSize, String sortBy, String sortFrom);
     List<Vehicle> search (VehicleSearchRequest vehicleSearchRequest, int pageNumber, int pageSize, String sortBy, String sortFrom);
     List<Vehicle> findSimilarVehicles (Long id) throws NotFoundException;
-
+    String getAllModels ();
+    void exchangeVehicle(Long idFirstCar, Long idSecondCar) throws NotFoundException;
 
 
 }
