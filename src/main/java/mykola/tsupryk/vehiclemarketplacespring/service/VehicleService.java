@@ -6,7 +6,9 @@ import mykola.tsupryk.vehiclemarketplacespring.entity.Owner;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface VehicleService {
 
 
     void addCar (VehicleCreateRequest vehicleCreateRequest, Long ownerId) throws UnreachebleTypeException, IOException, NotFoundException;
-    void addPhoto (Long id) throws IOException;
+//    void addPhoto (Long id, MultipartFile file) throws IOException;
     void delete(Long id) throws NotFoundException;
     Vehicle findById(Long id) throws NotFoundException;
     List<Vehicle> findAllVehicles (int pageNumber, int pageSize, String sortBy, String sortFrom);

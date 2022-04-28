@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,24 +51,24 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleRepository.save(vehicle);
     }
 
-    @Override
-    public void addPhoto(Long id) throws IOException {
-        Vehicle vehicle = vehicleRepository.findById(id).get();
-
-        Photo photo = new Photo();
-
-        File folder = new File(Photo.PATH + vehicle.getId() + ". " + vehicle.getBrand() + " " + vehicle.getModel());
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-        int nameNewPhoto = folder.listFiles().length + 1;
-        File file = new File(folder.getPath() + "/" + nameNewPhoto + ".jpg" );
-        photo.setVehicle(vehicle);
-        photo.setPhoto(file);
-        file.createNewFile();
-
-        photoRepository.save(photo);
-    }
+//    @Override
+//    public void addPhoto(Long id, MultipartFile file) throws IOException {
+//        Vehicle vehicle = vehicleRepository.findById(id).get();
+//
+//        Photo photo = new Photo();
+//
+//        File folder = new File(Photo.PATH + vehicle.getId() + ". " + vehicle.getBrand() + " " + vehicle.getModel());
+//        if (!folder.exists()) {
+//            folder.mkdir();
+//        }
+//        int nameNewPhoto = folder.listFiles().length + 1;
+//        File file = new File(folder.getPath() + "/" + nameNewPhoto + ".jpg" );
+//        photo.setVehicle(vehicle);
+//        photo.setPhoto(file);
+//        file.createNewFile();
+//
+//        photoRepository.save(photo);
+//    }
 
     @Override
     public void delete(Long id) throws NotFoundException {

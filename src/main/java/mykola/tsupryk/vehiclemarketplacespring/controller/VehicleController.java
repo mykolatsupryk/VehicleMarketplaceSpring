@@ -6,9 +6,11 @@ import mykola.tsupryk.vehiclemarketplacespring.dto.request.VehicleSearchRequest;
 import mykola.tsupryk.vehiclemarketplacespring.entity.Vehicle;
 import mykola.tsupryk.vehiclemarketplacespring.exception.NotFoundException;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
+import mykola.tsupryk.vehiclemarketplacespring.service.FilesStorageService;
 import mykola.tsupryk.vehiclemarketplacespring.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +21,8 @@ public class VehicleController {
 
     @Autowired
     private VehicleService vehicleService;
+    @Autowired
+    private FilesStorageService filesStorageService;
 
 
     @PostMapping("/create")
@@ -26,9 +30,9 @@ public class VehicleController {
         vehicleService.addCar(vehicleCreateRequest, ownerId);
     }
 
-    @PostMapping("/addPhoto/{id}")
-    public void addPhoto(@PathVariable Long id) throws IOException {
-        vehicleService.addPhoto(id);
+    @PostMapping("/{id}/addPhoto")
+    public void addPhoto(@PathVariable Long id, @RequestParam MultipartFile file) throws NotFoundException {
+        filesStorageService.savePhoto(id, file);
     }
 
     @PostMapping("/delete/{id}")
@@ -52,7 +56,7 @@ public class VehicleController {
         return vehicleService.search(vehicleSearchRequest, pageNumber, pageSize, sortBy, sortFrom);
     }
 
-    @GetMapping("/similarVehicles{id}")
+    @GetMapping("/{id}/similarVehicles")
     public List<Vehicle> getSimilarVehicles (@PathVariable Long id) throws NotFoundException {
         return vehicleService.findSimilarVehicles(id);
     }
