@@ -20,6 +20,9 @@ spring:
     port: 587
 server:
   port: 8081
+jwt:
+  secret: vehicleMarketplaceApp
+  expiration: 60000000
 
 
 #spring:

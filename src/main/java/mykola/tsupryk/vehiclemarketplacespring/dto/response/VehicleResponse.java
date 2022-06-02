@@ -1,23 +1,18 @@
-package mykola.tsupryk.vehiclemarketplacespring.dto.request;
-
+package mykola.tsupryk.vehiclemarketplacespring.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class VehicleCreateRequest {
+public class VehicleResponse {
 
-    private Long brandId;
-    private Long modelId;
+    private Long id;
+    private String brand;
+    private String model;
     private Integer yearOfManufacture;
-    private Long bodyTypeId;
+    private String bodyType;
     private Integer enginePower;
     private String color;
     private Integer mileAge;
     private Integer price;
-    //image
-
-
-
-
 }

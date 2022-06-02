@@ -14,8 +14,8 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer rating;
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private Owner owner;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppUser owner;
 
 
 

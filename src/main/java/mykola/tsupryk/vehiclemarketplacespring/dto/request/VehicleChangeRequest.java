@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter @Setter
 public class VehicleChangeRequest {
 
+    private Long id;
     private Integer enginePower;
     private String color;
     private Integer mileAge;

@@ -1,5 +1,6 @@
 package mykola.tsupryk.vehiclemarketplacespring.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.Message;
 import mykola.tsupryk.vehiclemarketplacespring.service.MessageService;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.util.Date;
 
-
+@Slf4j
 @Service
 public class MessageServiceImpl implements MessageService {
 
@@ -39,7 +40,7 @@ public class MessageServiceImpl implements MessageService {
             message.setSentDate(new Date());
             mailMessage.setSentDate(message.getSentDate());
         }
-
+        log.info("In sendMessage MessageServiceImpl - send from '{}' to '{}', subject: '{}'", message.getFrom(), message.getTo(), message.getSubject());
         javaMailSender.send(mailMessage.getMimeMessage());
     }
 

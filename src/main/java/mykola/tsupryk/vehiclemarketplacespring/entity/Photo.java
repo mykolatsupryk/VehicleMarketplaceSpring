@@ -1,5 +1,6 @@
 package mykola.tsupryk.vehiclemarketplacespring.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +16,13 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    public static final Path PATH = Paths.get("/home/mykolatsupryk/Desktop/KindGeek Project/"
+    public static final Path PATH = Paths.get("/home/mykolatsupryk/Java education/KindGeek Project/"
                                                     +"VehicleMarketplaceSpring/src/main/java/mykola/tsupryk/"
                                                     +"vehiclemarketplacespring/photo/");
     @Column(length = 1000)
     private String photoUrl;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
     private Vehicle vehicle;
 
 

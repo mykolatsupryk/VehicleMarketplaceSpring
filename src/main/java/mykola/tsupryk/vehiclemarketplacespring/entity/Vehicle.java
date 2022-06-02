@@ -1,11 +1,17 @@
 package mykola.tsupryk.vehiclemarketplacespring.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import mykola.tsupryk.vehiclemarketplacespring.entity.model.enums.Color;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -16,13 +22,16 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @ManyToOne
     private Brand brand;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @ManyToOne
     private Model model;
     private final String vin = generateVIN();
     private Integer yearOfManufacture;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonManagedReference
+    @ManyToOne
     private BodyType bodyType;
     private Integer enginePower;
     @Enumerated(value = EnumType.STRING)
@@ -30,8 +39,11 @@ public class Vehicle {
     private Integer mileAge;
     private Integer price;
     private Boolean isConfirm = false;
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private Owner owner;
+    @ManyToOne
+    private AppUser owner;
+    @JsonBackReference
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    List<Photo> photos = new ArrayList<>();
 
 
     public String generateVIN() {

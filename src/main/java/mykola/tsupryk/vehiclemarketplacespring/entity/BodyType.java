@@ -1,11 +1,15 @@
 package mykola.tsupryk.vehiclemarketplacespring.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import mykola.tsupryk.vehiclemarketplacespring.exception.UnreachebleTypeException;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "bodyType")
@@ -13,9 +17,12 @@ import javax.persistence.*;
 public class BodyType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String bodyType;
+    private String name;
+    @JsonBackReference
+    @OneToMany(mappedBy = "bodyType", cascade = CascadeType.ALL)
+    private List<Vehicle> vehicleList = new ArrayList<>();
 
 //    public static BodyType checkBodyType (String b) throws UnreachebleTypeException {
 //

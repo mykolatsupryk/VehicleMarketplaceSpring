@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BodyTypeRepository extends JpaRepository<BodyType, Long> {
 
-    BodyType findByBodyTypeIgnoreCase (String bodyType);
+    BodyType findByNameIgnoreCase (String bodyType);
 
 
 
